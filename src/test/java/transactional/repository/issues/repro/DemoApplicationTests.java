@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import transactional.repository.issues.repro.domain.FailingPersonRepository;
 import transactional.repository.issues.repro.domain.Person;
-import transactional.repository.issues.repro.domain.SucceedingPersonRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DemoApplication.class)
@@ -22,8 +21,6 @@ public class DemoApplicationTests {
 
 	@Autowired
 	private FailingPersonRepository failingRepository;
-	@Autowired
-	private SucceedingPersonRepository succeedingRepository;
 
 	@Test
 	public void failingRepositoryTest() {
@@ -42,24 +39,5 @@ public class DemoApplicationTests {
 
 		// ensure entity is gone
 		assertNull(failingRepository.findByFirstName("Max"));
-	}
-
-	@Test
-	public void succeedingRepositoryTest() {
-		// ensure entity is absent
-		assertNull(succeedingRepository.findByFirstName("Carl"));
-
-		// create entity
-		assertNotNull(succeedingRepository.save(new Person("Carl")));
-
-		// reload
-		Person person = succeedingRepository.findByFirstName("Carl");
-		assertNotNull(person);
-
-		// delete entiy
-		succeedingRepository.delete(person.getId());
-
-		// ensure entity is gone
-		assertNull(succeedingRepository.findByFirstName("Carl"));
 	}
 }
